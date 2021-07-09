@@ -909,6 +909,14 @@ class _HTMLGenericModal extends HTMLElement {
         this.querySelector("button").onclick = this.hide.bind(this);
         const main = this.querySelector("main");
 
+        const toCheck = this.querySelector('.GenericModal');
+        let hidePopup = this.hide.bind(this);
+        // Listen for click events on Overlay
+        this.querySelector(".GenericModal__overlay").addEventListener('click', (event) => {
+            if (!toCheck.contains(event.target))
+                hidePopup();
+        });
+
         if (Spicetify.React.isValidElement(content)) {
             Spicetify.ReactDOM.render(content, main);
         } else if (typeof content === "string") {
