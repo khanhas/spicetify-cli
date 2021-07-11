@@ -157,7 +157,7 @@ func insertCustomApp(jsPath string, flags Flag) {
 			"Custom app React symbols",
 			content,
 			[]string{
-				`lazy\(\(\(\)=>(\w+)\.(\w+)\(\d+\).then\(\w+\.bind\(\w+,\d+\)\)\)\)`})
+				`lazy\(\(function\(\)\{return (\w+)\.(\w+)\(\d+\).then\(\w+\.bind\(\w+,\d+\)\)\}\)\)`})
 		eleSymbs := utils.FindSymbol(
 			"Custom app React Element",
 			content,
@@ -176,7 +176,7 @@ func insertCustomApp(jsPath string, flags Flag) {
 			appNameArray += fmt.Sprintf(`"%s",`, app)
 
 			appReactMap += fmt.Sprintf(
-				`,spicetifyApp%d=Spicetify.React.lazy((()=>%s.%s("%s").then(%s.bind(%s,"%s"))))`,
+				`,spicetifyApp%d=Spicetify.React.lazy((function(){return %s.%s("%s").then(%s.bind(%s,"%s"))}))`,
 				index, reactSymbs[0], reactSymbs[1],
 				appName, reactSymbs[0], reactSymbs[0], appName)
 
@@ -194,7 +194,7 @@ func insertCustomApp(jsPath string, flags Flag) {
 
 		utils.ReplaceOnce(
 			&content,
-			`lazy\(\(\(\)=>[\w\.]+\(\d+\)\.then\(\w+\.bind\(\w+,\d+\)\)\)\)`,
+			`lazy\(\(function\(\)\{return [\w\.]+\(\d+\).then\(\w+\.bind\(\w+,\d+\)\)\}\)\)`,
 			`${0}`+appReactMap)
 
 		utils.ReplaceOnce(
